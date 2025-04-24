@@ -6,12 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -24,7 +27,6 @@ public class UserController {
     @RequestMapping("/")
     public String getHomePage(Model model) {
         List<User> arrUsers = this.userService.getAllUsersByEmail("truong@gmail.com");
-        System.out.println(arrUsers);
         model.addAttribute("monkey", "test");
         model.addAttribute("hoidanit", "from control with model");
         return "hello";
@@ -35,6 +37,14 @@ public class UserController {
         List<User> users = this.userService.getAllUsers();
         model.addAttribute("users1", users);
         return "admin/user/table-user"; // sẽ map tới create.jsp
+    }
+
+    @RequestMapping("/admin/user/{id}")
+    public String getUserDetailPage(Model model, @PathVariable long id) {
+        User users = this.userService.getUsersById(id);
+        System.out.println(users);
+        model.addAttribute("users", users);
+        return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/create")
@@ -48,6 +58,42 @@ public class UserController {
         this.userService.handleSaveUser(monkey);
         return "redirect:/admin/user"; // sẽ map tới create.jsp
     }
+
+    @RequestMapping("/admin/user/update/{id}")
+    public String getUpdateUserPage(Model model, @PathVariable long id) {
+        User currentUser = this.userService.getUsersById(id);
+        model.addAttribute("newUser", currentUser);
+        return "admin/user/update";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User monkey) {
+        User currentUser = this.userService.getUsersById(monkey.getId());
+        if (currentUser != null) {
+            currentUser.setAddress(monkey.getAddress());
+            currentUser.setFullName(monkey.getFullName());
+            currentUser.setPhone(monkey.getPhone());
+
+            this.userService.handleSaveUser(currentUser);
+        }
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping("/admin/user/delete/{id}")
+    public String detDeleteUserPage(Model model, @PathVariable long id) {
+        model.addAttribute("id", id);
+        // User user = new User();
+        // user.setId(id);
+        model.addAttribute("newUser", new User());
+        return "/admin/user/delete";
+    }
+
+    @PostMapping("/admin/user/delete")
+    public String postDeleteUser(Model model, @ModelAttribute("newUser") User monkey) {
+        this.userService.deleteAUser(monkey.getId());
+        return "redirect:/admin/user";
+    }
+
 }
 
 // @RestController
