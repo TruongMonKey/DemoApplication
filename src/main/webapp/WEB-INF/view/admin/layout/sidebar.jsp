@@ -1,0 +1,67 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+        <aside id="sidebar" class="sidebar">
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+                <li class="nav-heading">Pages</li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/admin/user">
+                        <i class="bi bi-person"></i>
+                        <span>Profile</span>
+                    </a>
+                </li><!-- End Profile Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/admin/user">
+                        <i class="bi bi-question-circle"></i>
+                        <span>User</span>
+                    </a>
+                </li><!-- End F.A.Q Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/admin/product">
+                        <i class="bi bi-envelope"></i>
+                        <span>Product</span>
+                    </a>
+                </li><!-- End Contact Page Nav -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/admin/order">
+                        <i class="bi bi-dash-circle"></i>
+                        <span>Order</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->
+
+                <!-- <li class="nav-item">
+            <a class="nav-link collapsed" href="pages-blank.html">
+                <i class="bi bi-file-earmark"></i>
+                <span>Blank</span>
+            </a>
+        </li>End Blank Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="pages-register.html">
+                        <i class="bi bi-card-list"></i>
+                        <span>Register</span>
+                    </a>
+                </li><!-- End Register Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="pages-login.html">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Login</span>
+                    </a>
+                </li><!-- End Login Page Nav -->
+
+
+            </ul>
+
+        </aside><!-- End Sidebar-->
