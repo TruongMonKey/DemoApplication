@@ -67,28 +67,39 @@
                                         <div class="row">
                                             <div class="mb-3 col-12 col-md-6">
                                                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                                                <form:input type="email" class="form-control"
+                                                <form:input type="email" class="form-control is-invalid"
                                                     aria-describedby="emailHelp" path="email" />
-                                                <div id="emailHelp" class="form-text">We'll never share your email with
-                                                    anyone else.
-                                                </div>
+                                                <form:errors path="email" cssClass="invalid-feedback" />
                                             </div>
                                             <div class="mb-3 col-12 col-md-6">
+                                                <c:set var="errorsPassword">
+                                                    <form:errors path="password" cssClass="invalid-feedback" />
+                                                </c:set>
                                                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                                                <form:input type="password" class="form-control" path="password" />
+                                                <form:input type="password"
+                                                    class="form-control ${not empty errorsPassword ? 'is-invalid' : ''}"
+                                                    path="password" />
+                                                ${errorsPassword}
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class=" mb-3 col-12 col-md-6">
+
                                                 <label for="exampleInputPassword1" class="form-label">Phone
                                                     number</label>
                                                 <form:input type="text" class="form-control" path="phone" />
                                             </div>
 
                                             <div class=" mb-3 col-12 col-md-6">
+                                                <c:set var="errorsFullName">
+                                                    <form:errors path="fullName" cssClass="invalid-feedback" />
+                                                </c:set>
                                                 <label for="exampleInputPassword1" class="form-label">Full Name</label>
-                                                <form:input type="text" class="form-control" path="fullName" />
+                                                <form:input type="text"
+                                                    class="form-control  ${not empty errorsFullName ? 'is-invalid' : ''}"
+                                                    path="fullName" />
+                                                ${errorsFullName}
                                             </div>
                                         </div>
 

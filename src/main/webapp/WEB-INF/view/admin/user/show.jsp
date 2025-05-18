@@ -73,7 +73,8 @@
                                         <th style="width: 10%;">ID</th>
                                         <th style="width: 25%;">Email</th>
                                         <th style="width: 25%;">Full Name</th>
-                                        <th style="width: 40%;">Action</th>
+                                        <th style="width: 15%;">Role</th>
+                                        <th style="width: 25%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +83,7 @@
                                             <td>${user.id}</td>
                                             <td>${user.email}</td>
                                             <td>${user.fullName}</td>
+                                            <td>${user.role.name}</td>
                                             <td><a href="/admin/user/${user.id}" type="button"
                                                     class="btn btn-success">View</a>
                                                 <a href="/admin/user/update/${user.id}" type="button"

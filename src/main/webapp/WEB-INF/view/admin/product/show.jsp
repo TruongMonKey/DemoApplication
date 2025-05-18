@@ -53,16 +53,56 @@
             <main id="main" class="main">
 
                 <div class="pagetitle">
-                    <h1>Dashboard</h1>
+                    <h1>Manage Product</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Manage Product</li>
                         </ol>
                     </nav>
                 </div><!-- End Page Title -->
 
-                <div>PRODUCT</div>
+                <body>
+                    <div class="mt-5">
+                        <div class="row">
+                            <div class="col-12 mx-auto">
+                                <div class="d-flex justify-content-between">
+                                    <h3>Table Product</h3>
+                                    <a href="/admin/product/create" class="btn btn-primary">Create a Product</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">ID</th>
+                                    <th style="width: 25%;">Name</th>
+                                    <th style="width: 25%;">Price</th>
+                                    <th style="width: 15%;">Factory</th>
+                                    <th style="width: 25%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="product" items="${products}">
+                                    <tr>
+                                        <td>${product.id}</td>
+                                        <td>${product.name}</td>
+                                        <td>${product.price}</td>
+                                        <td>${product.factory}</td>
+                                        <td>
+                                            <a href="/admin/product/${product.id}" class="btn btn-success">View</a>
+                                            <a href="/admin/product/update/${product.id}"
+                                                class="btn btn-warning mx-2">Update</a>
+                                            <a href="/admin/product/delete/${product.id}"
+                                                class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </body>
 
             </main><!-- End #main -->
 
