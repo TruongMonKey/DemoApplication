@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +18,10 @@ import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UploadService;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ProductController {
@@ -54,4 +58,59 @@ public class ProductController {
         this.productService.handleSaveProduct(product);
         return "redirect:/admin/product";
     }
+
+    @GetMapping("/admin/product/{id}")
+    public String getProductDetailPage(Model model, @PathVariable long id) {
+        Product products = this.productService.fetchProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        model.addAttribute("products", products);
+        return "admin/product/detail";
+    }
+
+    @GetMapping("/admin/product/update/{id}")
+    public String getUpdateProductPage(Model model, @PathVariable long id) {
+        Product currentProduct = this.productService.fetchProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        model.addAttribute("newProduct", currentProduct);
+        return "admin/product/update";
+    }
+
+    @PostMapping("/admin/product/update/{id}")
+    public String postUpdateProduct(Model model, @ModelAttribute("newProduct") Product product,
+            @RequestParam("nameFile") MultipartFile file) {
+
+        Optional<Product> optionalProduct = this.productService.fetchProductById(product.getId());
+        if (optionalProduct.isPresent()) {
+            Product currentProduct = optionalProduct.get();
+            currentProduct.setName(product.getName());
+            currentProduct.setPrice(product.getPrice());
+            currentProduct.setDetailDesc(product.getDetailDesc());
+            currentProduct.setShortDesc(product.getShortDesc());
+            currentProduct.setQuantity(product.getQuantity());
+            currentProduct.setFactory(product.getFactory());
+            currentProduct.setTarget(product.getTarget());
+            if (file != null && !file.isEmpty()) {
+                String fileName = uploadService.handleSaveUploadFile(file, "product");
+                currentProduct.setImage(fileName);
+            }
+            this.productService.handleSaveProduct(currentProduct);
+        }
+
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/delete/{id}")
+    public String getDeleteProductPage(Model model, @PathVariable long id) {
+        Product products = this.productService.fetchProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        model.addAttribute("products", products);
+        return "/admin/product/delete";
+    }
+
+    @PostMapping("admin/product/delete")
+    public String postDeleteProductPage(Model model, @ModelAttribute("newProduct") Product product) {
+        this.productService.deleteAProduct(product.getId());
+        return "redirect:/admin/product";
+    }
+
 }

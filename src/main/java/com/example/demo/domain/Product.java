@@ -3,6 +3,7 @@ package com.example.demo.domain;
 import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -29,8 +31,8 @@ public class Product {
 
     private String image;
 
-    @NotNull(message = "Mô tả chi tiết không được để trống")
-    @Size(min = 10, message = "Mô tả chi tiết phải có ít nhất 10 ký tự")
+    @NotEmpty(message = "detailDesc không được để trống")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @Size(max = 255, message = "Mô tả ngắn không được vượt quá 255 ký tự")

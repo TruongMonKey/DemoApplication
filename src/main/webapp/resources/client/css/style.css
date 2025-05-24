@@ -326,22 +326,6 @@
     transform: scale(1.3);
 }
 
-.fruite .fruite-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.fruite .fruite-item .fruite-img {
-    flex-shrink: 0;
-}
-
-.fruite .fruite-item .fruite-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 /*** Fruits End ***/
 
 

@@ -51,8 +51,8 @@
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item">User</li>
-                                <li class="breadcrumb-item active">Delete User</li>
+                                <li class="breadcrumb-item">Product</li>
+                                <li class="breadcrumb-item active">Delete Product</li>
                             </ol>
                         </nav>
                     </div><!-- End Page Title -->
@@ -62,16 +62,31 @@
                             <div class="row">
                                 <div class=" col-12 mx-auto">
                                     <div class="d-flex justify-content-between">
-                                        <h3>Delete User with id = ${id}</h3>
+                                        <h3>Delete Product with id = ${id}</h3>
                                     </div>
                                     <hr>
                                     <div class="alert alert-danger" role="alert">
-                                        Are you sure delete this user ?
+                                        Are you sure delete Product ?
                                     </div>
-                                    <form:form method="post" action="/admin/user/delete" modelAttribute="newUser">
+                                    <form:form method="post" modelAttribute="products" action="/admin/product/delete">
                                         <div class="mb-3" style="display: none;">
                                             <label class="form-label">ID : </label>
                                             <form:input value="${id}" type="text" class="form-control" path="id" />
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Product Information
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">
+                                                    <p>max cua ban: ${products.image}</p>
+                                                    <img src="/img/product/${products.image}" alt="Product Image"
+                                                        style="width: 45%; height: auto;">
+                                                </li>
+                                                <li class="list-group-item">ID: ${products.id}</li>
+                                                <li class="list-group-item">Name: ${products.name}</li>
+                                                <li class="list-group-item">Price: ${products.price}</li>
+                                            </ul>
                                         </div>
                                         <button type=" submit" class="btn btn-danger">Confirm</button>
                                     </form:form>

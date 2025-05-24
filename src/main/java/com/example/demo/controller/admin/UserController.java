@@ -70,13 +70,14 @@ public class UserController {
             @ModelAttribute("newUser") @Valid User monkey,
             BindingResult newUserBindingResult,
             @RequestParam("nameFile") MultipartFile file) {
-        List<FieldError> errors = newUserBindingResult.getFieldErrors();
-        for (FieldError error : errors) {
-            System.out.println(">>>>>" + error.getObjectName() + " - " + error.getDefaultMessage());
-        }
+        // List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        // for (FieldError error : errors) {
+        // System.out.println(">>>>>" + error.getObjectName() + " - " +
+        // error.getDefaultMessage());
+        // }
         // validate
         if (newUserBindingResult.hasErrors()) {
-            return "/admin/user/create";
+            return "admin/user/create";
         }
 
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
@@ -111,10 +112,8 @@ public class UserController {
     @GetMapping("/admin/user/delete/{id}")
     public String detDeleteUserPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
-        // User user = new User();
-        // user.setId(id);
         model.addAttribute("newUser", new User());
-        return "/admin/user/delete";
+        return "admin/user/delete";
     }
 
     @PostMapping("/admin/user/delete")

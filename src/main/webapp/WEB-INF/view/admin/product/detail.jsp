@@ -51,8 +51,8 @@
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item">User</li>
-                                <li class="breadcrumb-item active">Delete User</li>
+                                <li class="breadcrumb-item">Product</li>
+                                <li class="breadcrumb-item active">View Product</li>
                             </ol>
                         </nav>
                     </div><!-- End Page Title -->
@@ -60,22 +60,28 @@
                     <body>
                         <div class="container mt-5">
                             <div class="row">
-                                <div class=" col-12 mx-auto">
+                                <div class="col-12 mx-auto">
                                     <div class="d-flex justify-content-between">
-                                        <h3>Delete User with id = ${id}</h3>
+                                        <h3>Product Detail with ID = ${id}</h3>
                                     </div>
                                     <hr>
-                                    <div class="alert alert-danger" role="alert">
-                                        Are you sure delete this user ?
-                                    </div>
-                                    <form:form method="post" action="/admin/user/delete" modelAttribute="newUser">
-                                        <div class="mb-3" style="display: none;">
-                                            <label class="form-label">ID : </label>
-                                            <form:input value="${id}" type="text" class="form-control" path="id" />
-                                        </div>
-                                        <button type=" submit" class="btn btn-danger">Confirm</button>
-                                    </form:form>
 
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Product Information
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <img src="/img/product/${products.image}" alt="Product Image"
+                                                    style="width: 45%; height: auto;">
+                                            </li>
+                                            <li class="list-group-item">ID: ${products.id}</li>
+                                            <li class="list-group-item">Name: ${products.name}</li>
+                                            <li class="list-group-item">Price: ${products.price}</li>
+                                        </ul>
+                                    </div>
+
+                                    <a href="/admin/product" class="btn btn-success mt-3">Back</a>
                                 </div>
                             </div>
                         </div>

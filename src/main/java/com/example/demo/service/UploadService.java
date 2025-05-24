@@ -34,7 +34,7 @@ public class UploadService {
 
             bytes = file.getBytes();
 
-            File dir = new File(rootPath + File.separator + "avatar");
+            File dir = new File(rootPath + File.separator + "product");
             if (!dir.exists())
                 dir.mkdirs();
 

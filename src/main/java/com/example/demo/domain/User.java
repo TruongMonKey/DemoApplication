@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 import java.util.List;
 
+import com.example.demo.service.validator.StrongPassword;
+
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,12 +28,13 @@ public class User {
     private long id;
 
     @NotNull
-    @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email không đúng định dạng")
     private String email;
 
     @NotNull
-    @Size(min = 3, message = "Password phải có tối thiểu 2 ký tự")
+    @Size(min = 2, message = "Password phải có tối thiểu 2 ký tự")
+    // @StrongPassword(message = "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ
+    // thường, số và ký tự đặc biệt")
     private String password;
 
     @NotNull
