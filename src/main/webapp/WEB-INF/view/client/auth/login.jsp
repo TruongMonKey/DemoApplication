@@ -81,6 +81,15 @@
                                                             Invalid email or password
                                                         </div>
                                                     </c:if>
+                                                    <c:if test="${param.logout != null}">
+                                                        <div
+                                                            class="my-2 d-flex align-items-center justify-content-between">
+                                                            <span style="color: green;">Logout Success</span>
+                                                            <a href="/" class="btn btn-outline-primary btn-sm ms-3">Quay
+                                                                về trang chủ</a>
+                                                        </div>
+                                                    </c:if>
+
                                                     <div class="col-12">
                                                         <label for="yourUsername" class="form-label">Email
                                                             Address</label>

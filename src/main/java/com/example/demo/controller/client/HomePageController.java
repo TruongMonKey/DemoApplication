@@ -16,6 +16,8 @@ import com.example.demo.domain.dto.RegisterDTO;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +73,11 @@ public class HomePageController {
     public String getLoginPage(Model model) {
 
         return "client/auth/login";
+    }
+
+    @GetMapping("/access-deni")
+    public String getDeniPage(Model model) {
+
+        return "client/auth/access-deni";
     }
 }
