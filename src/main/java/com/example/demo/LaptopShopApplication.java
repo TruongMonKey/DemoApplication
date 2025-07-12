@@ -8,8 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
 public class LaptopShopApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LaptopShopApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(LaptopShopApplication.class, args);
+    }
 }

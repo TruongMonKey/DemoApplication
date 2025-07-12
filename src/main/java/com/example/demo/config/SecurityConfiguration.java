@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 
     @Bean
     public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) throws Exception {
+            UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
@@ -62,26 +62,28 @@ public class SecurityConfiguration {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.INCLUDE)
                         .permitAll()
-                        .requestMatchers("/", "/login", "/product/**", "/client/**", "/css/**", "/js/**", "/img/**")
+                        .requestMatchers("/", "/login", "/product/**", "/register/**", "/client/**", "/css/**",
+                                "/js/**", "/img/**", "/vendor/**")
                         .permitAll()
-
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
+
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .invalidSessionUrl("/logout?expired")
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
+
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+
                 .rememberMe(remember -> remember.rememberMeServices(rememberMeServices()))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
                         .successHandler(customSuccessHandler())
                         .permitAll())
-                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deni"));
+                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
 
         return http.build();
     }
-
 }

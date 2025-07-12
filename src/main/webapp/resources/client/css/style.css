@@ -510,3 +510,54 @@
 }
 
 /*** Footer End ***/
+
+/* --- Cart Page Minimal Styles --- */
+.cart-img-minimal {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+}
+.cart-qty-input-minimal {
+    max-width: 38px;
+    font-weight: 500;
+    font-size: 1rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+.cart-coupon-input-minimal {
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+}
+.order-summary-minimal {
+    border: 1px solid #e0e0e0 !important;
+    background: #fff;
+    border-radius: 16px;
+}
+.table-bordered>tbody>tr>td, .table-bordered>thead>tr>th {
+    border-color: #e0e0e0;
+}
+.btn-outline-secondary, .btn-outline-danger, .btn-outline-primary, .btn-success {
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    padding: 0.25rem 0.75rem !important;
+}
+.btn-sm {
+    font-size: 0.95rem !important;
+    padding: 0.25rem 0.7rem !important;
+}
+input:focus, .btn:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+.btn-outline-secondary:hover, .btn-outline-primary:hover, .btn-outline-danger:hover {
+    background: #f0f4fa !important;
+}
+.btn-success:hover {
+    background: #198754cc !important;
+}
+/* --- End Cart Page Minimal Styles --- */

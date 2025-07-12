@@ -35,7 +35,7 @@ public class ProductController {
 
     @GetMapping("/admin/product")
     public String getProduct(Model model) {
-        List<Product> products = this.productService.fetchProducts();
+        List<Product> products = this.productService.getAllProducts();
         model.addAttribute("products", products);
         return "admin/product/show";
     }
@@ -55,13 +55,13 @@ public class ProductController {
         }
         String image = this.uploadService.handleSaveUploadFile(file, "product");
         product.setImage(image);
-        this.productService.handleSaveProduct(product);
+        this.productService.createProduct(product);
         return "redirect:/admin/product";
     }
 
     @GetMapping("/admin/product/{id}")
     public String getProductDetailPage(Model model, @PathVariable long id) {
-        Product products = this.productService.fetchProductById(id)
+        Product products = this.productService.getProductById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         model.addAttribute("products", products);
         return "admin/product/detail";
@@ -69,7 +69,7 @@ public class ProductController {
 
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable long id) {
-        Product currentProduct = this.productService.fetchProductById(id)
+        Product currentProduct = this.productService.getProductById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         model.addAttribute("newProduct", currentProduct);
         return "admin/product/update";
@@ -79,7 +79,7 @@ public class ProductController {
     public String postUpdateProduct(Model model, @ModelAttribute("newProduct") Product product,
             @RequestParam("nameFile") MultipartFile file) {
 
-        Optional<Product> optionalProduct = this.productService.fetchProductById(product.getId());
+        Optional<Product> optionalProduct = this.productService.getProductById(product.getId());
         if (optionalProduct.isPresent()) {
             Product currentProduct = optionalProduct.get();
             currentProduct.setName(product.getName());
@@ -93,7 +93,7 @@ public class ProductController {
                 String fileName = uploadService.handleSaveUploadFile(file, "product");
                 currentProduct.setImage(fileName);
             }
-            this.productService.handleSaveProduct(currentProduct);
+            this.productService.createProduct(currentProduct);
         }
 
         return "redirect:/admin/product";
@@ -101,7 +101,7 @@ public class ProductController {
 
     @GetMapping("/admin/product/delete/{id}")
     public String getDeleteProductPage(Model model, @PathVariable long id) {
-        Product products = this.productService.fetchProductById(id)
+        Product products = this.productService.getProductById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         model.addAttribute("products", products);
         return "/admin/product/delete";
@@ -109,7 +109,7 @@ public class ProductController {
 
     @PostMapping("admin/product/delete")
     public String postDeleteProductPage(Model model, @ModelAttribute("newProduct") Product product) {
-        this.productService.deleteAProduct(product.getId());
+        this.productService.deleteProduct(product.getId());
         return "redirect:/admin/product";
     }
 

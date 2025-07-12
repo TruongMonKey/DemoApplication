@@ -8,9 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Product save(Product product);
+    // Product save(Product product);
 
-    Optional<Product> findById(long id);
+    // Optional<Product> findById(long id);
 
-    void deleteById(long id);
+    // void deleteById(long id);
 }

@@ -5,7 +5,7 @@
             <div class="container-fluid" style="top: 0px;">
                 <div class="container px-0">
                     <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                        <a href="index.html" class="navbar-brand">
+                        <a href="/" class="navbar-brand">
                             <h1 class="text-primary display-6">Mac Shop</h1>
                         </a>
                         <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
@@ -39,7 +39,7 @@
                                             <span
                                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary text-dark"
                                                 style="min-width: 18px; height: 18px; font-size: 0.75rem; padding: 2px 4px;">
-                                                3
+                                                ${sessionScope.sum}
                                             </span>
                                         </a>
 

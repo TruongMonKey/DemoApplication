@@ -101,33 +101,40 @@
                                             <div class="row g-4">
                                                 <c:forEach var="product" items="${products}">
                                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                                        <div class="rounded position-relative fruite-item">
+                                                        <div
+                                                            class="card product-card h-100 border-0 shadow-sm position-relative">
                                                             <a href="/product/${product.id}">
-                                                                <div class="fruite-img">
-                                                                    <img src="/img/product/${product.image}"
-                                                                        class="img-fluid w-100 rounded-top" alt="">
-                                                                </div>
+                                                                <img src="/img/product/${product.image}"
+                                                                    class="card-img-top product-img mx-auto d-block mt-3"
+                                                                    alt="${product.name}">
                                                             </a>
-                                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                            <div class="badge bg-secondary position-absolute"
                                                                 style="top: 10px; left: 10px;">MacT&B</div>
                                                             <div
-                                                                class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                                <a href="/product/${product.id}">
-                                                                    <h4 style="font-size: 15px;">${product.name}</h4>
+                                                                class="card-body d-flex flex-column justify-content-between align-items-center">
+                                                                <a href="/product/${product.id}"
+                                                                    class="text-decoration-none text-dark text-center w-100">
+                                                                    <h5 class="card-title mb-2"
+                                                                        style="font-size: 16px;">${product.name}</h5>
                                                                 </a>
-                                                                <p style="font-size: 13px">${product.shortDesc}</p>
-                                                                <div
-                                                                    class="d-flex justify-content-between flex-lg-wrap">
-                                                                    <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                        class="text-dark fw-bold mb-3">
-                                                                        <fmt:formatNumber type="number"
-                                                                            value="${product.price}" /> đ
-                                                                    </p>
-                                                                    <a href="#"
-                                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                                            class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                        Add to cart</a>
-                                                                </div>
+                                                                <p class="card-text text-muted text-center mb-2"
+                                                                    style="font-size: 13px; min-height: 38px;">
+                                                                    ${product.shortDesc}</p>
+                                                                <p class="fw-bold text-primary mb-3"
+                                                                    style="font-size: 16px;">
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${product.price}" /> đ
+                                                                </p>
+                                                                <form action="/add-product-to-cart/${product.id}"
+                                                                    method="post"
+                                                                    class="w-100 d-flex justify-content-center">
+                                                                    <input type="hidden" name="${_csrf.parameterName}"
+                                                                        value="${_csrf.token}" />
+                                                                    <button
+                                                                        class="btn btn-outline-primary rounded-pill px-3 py-1 w-100"><i
+                                                                            class="fa fa-shopping-bag me-2"></i>Thêm vào
+                                                                        giỏ</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -686,3 +693,56 @@
             </body>
 
             </html>
+            <style>
+                .product-card {
+                    border: 1.5px solid #e0e0e0;
+                    transition: transform 0.3s cubic-bezier(.4, 2, .3, 1), box-shadow 0.3s, border-color 0.3s;
+                    border-radius: 18px;
+                    background: #fff;
+                    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+                    overflow: hidden;
+                    position: relative;
+                }
+
+                .product-card:hover {
+                    transform: translateY(-10px) scale(1.04);
+                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+                    border-color: #4e9af1;
+                    z-index: 2;
+                }
+
+                .product-card .product-img {
+                    width: 180px;
+                    height: 180px;
+                    object-fit: cover;
+                    border-radius: 12px;
+                    background: #f8f9fa;
+                    transition: transform 0.35s cubic-bezier(.4, 2, .3, 1);
+                }
+
+                .product-card:hover .product-img {
+                    transform: scale(1.08) rotate(-2deg);
+                    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+                }
+
+                .product-card .btn-outline-primary {
+                    transition: background 0.25s, color 0.25s, transform 0.2s;
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                }
+
+                .product-card .btn-outline-primary:hover {
+                    background: linear-gradient(90deg, #4e9af1 0%, #6ed6a0 100%);
+                    color: #fff;
+                    transform: scale(1.06);
+                    border: none;
+                    box-shadow: 0 2px 8px rgba(78, 154, 241, 0.15);
+                }
+
+                .product-card .badge {
+                    font-size: 13px;
+                    padding: 6px 14px;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                }
+            </style>
