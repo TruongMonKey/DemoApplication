@@ -67,6 +67,11 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
+
+        // set session attributes first
+        clearAuthenticationAttributes(request, authentication);
+
+        // then redirect
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
@@ -74,7 +79,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request, authentication);
     }
 
 }

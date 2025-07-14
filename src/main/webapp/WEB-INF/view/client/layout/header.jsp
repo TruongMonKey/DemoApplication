@@ -75,9 +75,9 @@
                                                 <li><a class="dropdown-item py-2" href="/profile"><i
                                                             class="fas fa-id-card me-2 text-secondary"></i>Thông tin cá
                                                         nhân</a></li>
-                                                <li><a class="dropdown-item py-2" href="/orders"><i
-                                                            class="fas fa-box me-2 text-secondary"></i>Đơn hàng của
-                                                        tôi</a></li>
+                                                <li><a class="dropdown-item py-2" href="/order-history"><i
+                                                            class="fas fa-box me-2 text-secondary"></i>Lịch sử mua
+                                                        hàng</a></li>
                                                 <li>
                                                     <form method="post" action="/logout">
                                                         <input type="hidden" name="${_csrf.parameterName}"

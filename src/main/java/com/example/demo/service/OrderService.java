@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Order;
 import com.example.demo.domain.OrderDetail;
+import com.example.demo.domain.User;
 import com.example.demo.repository.OrderDetailRepository;
 import com.example.demo.repository.OrderRepository;
 
@@ -46,7 +47,10 @@ public class OrderService {
                 this.orderDetailRepository.deleteById(orderDetail.getId());
             }
         }
-
         this.orderRepository.deleteById(id);
+    }
+
+    public List<Order> fetchOrderByUser(User user) {
+        return this.orderRepository.findByUser(user);
     }
 }
