@@ -2,7 +2,11 @@ package com.example.demo.controller.admin;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UploadService;
@@ -46,10 +51,22 @@ public class UserController {
     }
 
     @RequestMapping("/admin/user")
-    public String getUserPage(Model model) {
-        List<User> users = this.userService.getAllUsers();
-        model.addAttribute("users1", users);
-        return "admin/user/show"; // sẽ map tới create.jsp
+    public String getUserPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<User> prs = this.userService.getAllUsers(pageable);
+        List<User> listUser = prs.getContent();
+        model.addAttribute("users", listUser);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", prs.getTotalPages());
+        return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/{id}")

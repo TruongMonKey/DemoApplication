@@ -78,7 +78,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="user" items="${users1}">
+                                    <c:forEach var="user" items="${users}">
                                         <tr>
                                             <td>${user.id}</td>
                                             <td>${user.email}</td>
@@ -95,6 +95,30 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
+
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="/admin/user?page=${currentPage - 1}"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <c:forEach begin="1" end="${totalPages}" var="pageNum">
+                                        <li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/user?page=${pageNum}">${pageNum}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                        <a class="page-link" href="/admin/user?page=${currentPage + 1}"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </body>
 
