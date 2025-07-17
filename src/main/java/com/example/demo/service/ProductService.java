@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Cart;
@@ -13,11 +14,13 @@ import com.example.demo.domain.Order;
 import com.example.demo.domain.OrderDetail;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
+import com.example.demo.domain.dto.ProductCriterialDTO;
 import com.example.demo.repository.CartDetailRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.OrderDetailRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.specification.ProductSpecService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -46,6 +49,102 @@ public class ProductService {
 
     public Page<Product> getAllProducts(Pageable pageable) {
         return this.productRepository.findAll(pageable);
+    }
+
+    public Page<Product> getAllProductsWithSpec(Pageable pageable, ProductCriterialDTO productCriterialDTO) {
+
+        if (productCriterialDTO.getTarget() == null && productCriterialDTO.getName() == null
+                && productCriterialDTO.getPrice() == null) {
+            return this.productRepository.findAll(pageable);
+        }
+        Specification<Product> combinedSpec = Specification.where(null);
+        if (productCriterialDTO.getTarget() != null && productCriterialDTO.getTarget().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecService
+                    .matchListTarget(productCriterialDTO.getTarget().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        if (productCriterialDTO.getName() != null && productCriterialDTO.getName().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecService.matchListName(productCriterialDTO.getName().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        if (productCriterialDTO.getPrice() != null && productCriterialDTO.getPrice().isPresent()) {
+            Specification<Product> currentSpecs = this.buildPriceSpecification(productCriterialDTO.getPrice().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        return this.productRepository.findAll(combinedSpec, pageable);
+    }
+
+    // public Page<Product> getAllProductsWithSpec(Pageable pageable, double max) {
+    // return this.productRepository.findAll(ProductSpecService.minPrice(max),
+    // pageable);
+    // }
+
+    // public Page<Product> getAllProductsWithSpec(Pageable pageable, double min) {
+    // return this.productRepository.findAll(ProductSpecService.maxPrice(min),
+    // pageable);
+    // }
+
+    // public Page<Product> getAllProductsWithSpec(Pageable pageable, String target)
+    // {
+    // return this.productRepository.findAll(ProductSpecService.nameTarget(target),
+    // pageable);
+    // }
+
+    // public Page<Product> getAllProductsWithSpec(Pageable pageable, List<String>
+    // target) {
+    // return
+    // this.productRepository.findAll(ProductSpecService.matchListTarget(target),
+    // pageable);
+    // }
+
+    // public Page<Product> getAllProductsWithSpec(Pageable pageable, String price)
+    // {
+    // if (price.equals("10-toi-20-trieu")) {
+    // double min = 10000000;
+    // double max = 20000000;
+    // return this.productRepository.findAll(ProductSpecService.matchPrice(min,
+    // max), pageable);
+    // } else if (price.equals("10-toi-20-trieu")) {
+    // double min = 20000000;
+    // double max = 30000000;
+    // return this.productRepository.findAll(ProductSpecService.matchPrice(min,
+    // max), pageable);
+
+    // } else {
+    // return this.productRepository.findAll(pageable);
+    // }
+    // }
+
+    public Specification<Product> buildPriceSpecification(List<String> price) {
+        Specification<Product> combinedSpec = Specification.where(null);
+        for (String p : price) {
+            double min = 0;
+            double max = 0;
+            switch (p) {
+                case "duoi-10-trieu":
+                    min = 0;
+                    max = 10000000;
+                    break;
+                case "10-toi-20-trieu":
+                    min = 10000000;
+                    max = 20000000;
+                    break;
+                case "20-toi-30-trieu":
+                    min = 20000000;
+                    max = 30000000;
+                    break;
+                case "tren-30-trieu":
+                    min = 30000000;
+                    max = 300000000;
+                    break;
+            }
+            if (min != 0 && max != 0) {
+                Specification<Product> rangeSpec = ProductSpecService.matchMultiplePrice(min,
+                        max);
+                combinedSpec = combinedSpec.or(rangeSpec);
+            }
+        }
+        return combinedSpec;
     }
 
     public Optional<Product> getProductById(long id) {

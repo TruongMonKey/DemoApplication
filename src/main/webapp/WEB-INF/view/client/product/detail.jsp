@@ -71,32 +71,8 @@
                 </div>
 
                 <!-- Navbar -->
-                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-                    <div class="container">
-                        <a class="navbar-brand text-primary fw-bold" href="/">Mac Detail</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNav">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav mx-auto">
-                                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/shop">Mac</a></li>
-                                <li class="nav-item"><a class="nav-link active" href="#">Product Detail</a></li>
-                            </ul>
-                            <div class="d-flex gap-3">
-                                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#searchModal"><i
-                                        class="fas fa-search text-primary"></i></button>
-                                <a href="/cart" class="btn btn-light position-relative">
-                                    <i class="fa fa-shopping-bag text-primary"></i>
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">${sessionScope.sum}</span>
-                                </a>
-                                <a href="#" class="btn btn-light"><i class="fas fa-user text-primary"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="../layout/header.jsp" />
+
 
                 <!-- Search Modal -->
                 <div class="modal fade" id="searchModal" tabindex="-1">
@@ -127,8 +103,8 @@
                                 <fmt:formatNumber type="number" value="${product.price}" /> đ
                             </h4>
                             <div class="mb-3">
-                                <i class="fa fa-star text-warning"></i> <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i> <i class="fa fa-star-half-alt text-warning"></i>
+                                <i class="fa fa-star text-warning"></i><i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i><i class="fa fa-star-half-alt text-warning"></i>
                                 <i class="far fa-star text-warning"></i>
                             </div>
                             <p>${product.shortDesc}</p>

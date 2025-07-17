@@ -127,6 +127,65 @@
         $('#videoModal').on('hide.bs.modal', function (e) {
             $("#video").attr('src', $videoSrc);
         })
+
+        // add active class to header
+        const navElement = $("#navbarCollapse");
+        const currentUrl = window.location.pathname;
+        navElement.find('a.nav-link').each(function () {
+            const link = $(this);
+            const href = link.attr('href');
+
+            if (href === currentUrl) {
+                link.addClass('active');
+            } else {
+                link.removeClass('active');
+            }
+        });
+
+        // lọc sản phẩm
+        $("#filterButton").click(function () {
+            let fact = [];
+            let target = [];
+            let money = [];
+            let sort = "";
+
+            $("#nameFilter .form-check-input:checked").each(function () {
+                fact.push($(this).val());
+            });
+
+            $("#targetFilter .form-check-input:checked").each(function () {
+                target.push($(this).val());
+            });
+
+            $("#moneyFilter .form-check-input:checked").each(function () {
+                money.push($(this).val());
+            });
+
+            sort = $("#sortFilter .form-check-input:checked").val() || "";
+
+            let currentUrl = new URL(window.location.href);
+            let searchParams = currentUrl.searchParams;
+
+            if (fact.length > 0) searchParams.set("name", fact.join(','));
+            else searchParams.delete("name");
+
+            if (target.length > 0) searchParams.set("target", target.join(','));
+            else searchParams.delete("target");
+
+            if (money.length > 0) searchParams.set("price", money.join(','));
+            else searchParams.delete("price");
+
+            if (sort !== "") searchParams.set("sort", sort);
+            else searchParams.delete("sort");
+
+            searchParams.set("page", "1");
+
+            currentUrl.search = searchParams.toString();
+            history.pushState('', '', currentUrl.toString());
+            location.reload();
+        });
+
+
     });
 
 

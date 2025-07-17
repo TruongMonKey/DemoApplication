@@ -1,8 +1,14 @@
 package com.example.demo.controller.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.domain.Cart;
 import com.example.demo.domain.CartDetail;
 import com.example.demo.domain.Product;
+import com.example.demo.domain.Product_;
 import com.example.demo.domain.User;
+import com.example.demo.domain.dto.ProductCriterialDTO;
 import com.example.demo.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -143,6 +151,50 @@ public class ItemController {
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, id, session, quantity);
         return "redirect:/product/" + id;
+    }
+
+    @GetMapping("/products")
+    public String getProductPage(Model model, ProductCriterialDTO productCriterialDTO, HttpServletRequest request) {
+        int page = 1;
+        try {
+            if (productCriterialDTO.getPage() != null && productCriterialDTO.getPage().isPresent()) {
+                page = Integer.parseInt(productCriterialDTO.getPage().get());
+            }
+        } catch (Exception e) {
+            page = 1;
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 3); // default sort
+
+        if (productCriterialDTO.getSort() != null && productCriterialDTO.getSort().isPresent()) {
+            String sort = productCriterialDTO.getSort().get();
+            if (sort.equals("gia-tang-dan")) {
+                pageable = PageRequest.of(page - 1, 3, Sort.by(Product_.PRICE).ascending());
+            } else if (sort.equals("gia-giam-dan")) {
+                pageable = PageRequest.of(page - 1, 3, Sort.by(Product_.PRICE).descending());
+            }
+        }
+
+        Page<Product> prs = this.productService.getAllProductsWithSpec(pageable, productCriterialDTO);
+        List<Product> listProducts = prs.getContent();
+
+        String qs = request.getQueryString();
+        if (qs != null && !qs.isBlank()) {
+            qs = qs.replaceAll("page=\\d+", ""); // xóa tham số page cũ
+            if (!qs.isBlank() && !qs.startsWith("&")) {
+                qs = "&" + qs;
+            }
+        } else {
+            qs = "";
+        }
+
+        model.addAttribute("products", listProducts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("queryString", qs);
+        model.addAttribute("sort",
+                productCriterialDTO.getSort() != null ? productCriterialDTO.getSort().orElse("") : "");
+        return "client/product/show";
     }
 
 }
