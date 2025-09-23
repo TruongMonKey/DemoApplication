@@ -46,7 +46,6 @@
 
                 <jsp:include page="../layout/banner.jsp" />
 
-
                 <jsp:include page="../layout/feature.jsp" />
 
 
@@ -117,10 +116,13 @@
                                                                     class="w-100 d-flex justify-content-center">
                                                                     <input type="hidden" name="${_csrf.parameterName}"
                                                                         value="${_csrf.token}" />
-                                                                    <button
-                                                                        class="btn btn-outline-primary rounded-pill px-3 py-1 w-100"><i
-                                                                            class="fa fa-shopping-bag me-2"></i>Thêm vào
-                                                                        giỏ</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary rounded-pill px-3 py-1 w-100 add-to-cart-btn"
+                                                                        data-id="${product.id}">
+                                                                        <i class="fa fa-shopping-bag me-2"></i>Thêm vào
+                                                                        giỏ
+                                                                    </button>
+
                                                                 </form>
                                                             </div>
                                                         </div>
