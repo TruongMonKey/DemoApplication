@@ -14,6 +14,7 @@ import com.example.demo.domain.Order;
 import com.example.demo.domain.OrderDetail;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
+import com.example.demo.domain.dto.BestSellerDTO;
 import com.example.demo.domain.dto.ProductCriterialDTO;
 import com.example.demo.repository.CartDetailRepository;
 import com.example.demo.repository.CartRepository;
@@ -74,47 +75,6 @@ public class ProductService {
         return this.productRepository.findAll(combinedSpec, pageable);
     }
 
-    // public Page<Product> getAllProductsWithSpec(Pageable pageable, double max) {
-    // return this.productRepository.findAll(ProductSpecService.minPrice(max),
-    // pageable);
-    // }
-
-    // public Page<Product> getAllProductsWithSpec(Pageable pageable, double min) {
-    // return this.productRepository.findAll(ProductSpecService.maxPrice(min),
-    // pageable);
-    // }
-
-    // public Page<Product> getAllProductsWithSpec(Pageable pageable, String target)
-    // {
-    // return this.productRepository.findAll(ProductSpecService.nameTarget(target),
-    // pageable);
-    // }
-
-    // public Page<Product> getAllProductsWithSpec(Pageable pageable, List<String>
-    // target) {
-    // return
-    // this.productRepository.findAll(ProductSpecService.matchListTarget(target),
-    // pageable);
-    // }
-
-    // public Page<Product> getAllProductsWithSpec(Pageable pageable, String price)
-    // {
-    // if (price.equals("10-toi-20-trieu")) {
-    // double min = 10000000;
-    // double max = 20000000;
-    // return this.productRepository.findAll(ProductSpecService.matchPrice(min,
-    // max), pageable);
-    // } else if (price.equals("10-toi-20-trieu")) {
-    // double min = 20000000;
-    // double max = 30000000;
-    // return this.productRepository.findAll(ProductSpecService.matchPrice(min,
-    // max), pageable);
-
-    // } else {
-    // return this.productRepository.findAll(pageable);
-    // }
-    // }
-
     public Specification<Product> buildPriceSpecification(List<String> price) {
         Specification<Product> combinedSpec = Specification.where(null);
         for (String p : price) {
@@ -172,8 +132,6 @@ public class ProductService {
                 cart = this.cartRepository.save(otherCart);
             }
 
-            // save cart detail
-            // tìm product by ID
 
             Optional<Product> productOptional = this.productRepository.findById(productId);
             if (productOptional.isPresent()) {
@@ -299,5 +257,25 @@ public class ProductService {
     public List<Product> getRelatedProducts(Long currentProductId) {
         return productRepository.findTop4ByIdNot(currentProductId);
     }
+
+    public BestSellerDTO getBestSeller() {
+    List<BestSellerDTO> result = orderDetailRepository.findBestSellingProduct();
+    if (result == null || result.isEmpty()) {
+        return null;
+    }
+    return result.get(0);
+}
+
+    public List<BestSellerDTO> getTopBestSellers(int limit) {
+        List<BestSellerDTO> result = orderDetailRepository.findBestSellingProduct();
+        if (result == null || result.isEmpty()) {
+            return List.of();
+        }
+        if (limit > 0 && result.size() > limit) {
+            return result.subList(0, limit);
+        }
+        return result;
+    }
+
 
 }

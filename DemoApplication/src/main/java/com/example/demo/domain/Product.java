@@ -1,14 +1,10 @@
 package com.example.demo.domain;
 
-import java.util.List;
-import java.util.concurrent.LinkedTransferQueue;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -50,9 +46,6 @@ public class Product {
     @Size(max = 100, message = "Đối tượng sử dụng không được vượt quá 100 ký tự")
     private String target;
 
-    // Không cần thiết
-    // @OneToMany(mappedBy = "product")
-    // List<Product> products;
 
     public long getId() {
         return id;

@@ -305,3 +305,24 @@
 
 })(jQuery);
 
+// Banner ripple effect for lively interaction
+(function () {
+  const attachRipple = (btn) => {
+    btn.addEventListener('click', function (e) {
+      const rect = this.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      ripple.className = 'ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 650);
+    }, { passive: true });
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.hero-header .btn, .best-card .btn').forEach(attachRipple);
+  });
+})();
+

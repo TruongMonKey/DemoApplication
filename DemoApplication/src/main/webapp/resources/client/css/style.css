@@ -180,91 +180,266 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../img/hero-img.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8ecf3 100%);
+  /* bạn có thể đổi màu theo brand của mình */
+  overflow: hidden;
 }
 
-.carousel-item {
-    position: relative;
+/* Hero lively background */
+.hero-header {
+  position: relative;
+}
+.hero-header::before,
+.hero-header::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  animation: floatBlob 18s ease-in-out infinite;
+}
+.hero-header::before {
+  width: 320px; height: 320px;
+  left: -100px; top: -80px;
+  background: radial-gradient(closest-side, rgba(15,195,149,0.6), rgba(15,195,149,0.0));
+}
+.hero-header::after {
+  width: 380px; height: 380px;
+  right: -120px; bottom: -120px;
+  background: radial-gradient(closest-side, rgba(30,144,255,0.35), rgba(30,144,255,0.0));
+  animation-delay: 4s;
+}
+@keyframes floatBlob {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-16px) translateX(8px) scale(1.06); }
 }
 
-.carousel-item a {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 25px;
-    background: linear-gradient(rgba(255, 181, 36, 0.7), rgba(255, 181, 36, 0.7));
+/* Search focus glow */
+.hero-header .search-bar .form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(15,195,149,0.15) !important;
+}
+.hero-header .search-bar .btn {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.hero-header .search-bar .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15,195,149,0.25);
+}
+
+/* Carousel caption hover */
+#carouselHero .carousel-caption a {
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+#carouselHero .carousel-caption a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(15,195,149,0.25);
+}
+
+/* Banner text variant */
+.banner-badge { background: rgba(15,195,149,.12); color: #0fc395; border: 1px solid rgba(15,195,149,.25); }
+.banner-title { color: #0f172a; }
+.feature-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  font-weight: 500;
+}
+.feature-chip i { color: #0fc395; }
+
+/* Button ripple support (used by JS) */
+.btn,
+.btn-brand,
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(255,255,255,0.45);
+  animation: rippleAnim 600ms linear;
+  pointer-events: none;
+}
+@keyframes rippleAnim {
+  to { transform: scale(12); opacity: 0; }
+}
+
+.hero-header h1 {
+  font-size: 3rem;
+}
+
+.hero-header p {
+  font-size: 1.05rem;
+  max-width: 500px;
+}
+
+/* Thanh tìm kiếm */
+.search-bar input {
+  max-width: 400px;
+}
+
+.search-bar button {
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.6rem 1.5rem;
+}
+
+/* Carousel */
+#carouselHero .carousel-inner img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: transform 0.6s ease;
+}
+
+#carouselHero .carousel-inner img:hover {
+  transform: scale(1.05);
+}
+
+#carouselHero {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
 }
 
 .carousel-control-next,
 .carousel-control-prev {
-    width: 48px;
-    height: 48px;
-    border-radius: 48px;
-    border: 1px solid var(--bs-white);
-    background: var(--bs-primary);
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bs-primary);
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
 }
 
-.carousel-control-next {
-    margin-right: 20px;
+.carousel-control-next:hover,
+.carousel-control-prev:hover {
+  opacity: 1;
 }
 
-.carousel-control-prev {
-    margin-left: 20px;
+/* Caption */
+.carousel-caption a {
+  background: rgba(255, 181, 36, 0.8);
+  border: none;
+  font-size: 1rem;
 }
 
-.page-header {
-    position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/cart-page-header-img.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+/* Global brand application to Bootstrap primary */
+.text-primary { color: var(--brand-color-opaque) !important; }
+.bg-primary { background-color: var(--brand-color-opaque) !important; }
+.border-primary { border-color: var(--brand-color-opaque) !important; }
+.link-primary { color: var(--brand-color-opaque) !important; }
+.link-primary:hover { color: #0aa17b !important; }
+
+.btn-primary {
+  background-color: var(--brand-color-opaque) !important;
+  border-color: var(--brand-color-opaque) !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  filter: brightness(0.95);
+}
+.btn-outline-primary {
+  color: var(--brand-color-opaque) !important;
+  border-color: var(--brand-color-opaque) !important;
+}
+.btn-outline-primary:hover {
+  background-color: var(--brand-color-opaque) !important;
+  color: #fff !important;
 }
 
-@media (min-width: 992px) {
-
-    .hero-header,
-    .page-header {
-        margin-top: 152px !important;
-    }
+.form-check-input:checked {
+  background-color: var(--brand-color-opaque) !important;
+  border-color: var(--brand-color-opaque) !important;
+}
+.page-item.active .page-link {
+  background-color: var(--brand-color-opaque) !important;
+  border-color: var(--brand-color-opaque) !important;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: var(--brand-color-opaque) !important;
 }
 
+/* Responsive */
 @media (max-width: 992px) {
-
-    .hero-header,
-    .page-header {
-        margin-top: 97px !important;
-    }
+  .hero-header h1 {
+    font-size: 2.3rem;
+  }
+  #carouselHero .carousel-inner img {
+    height: 300px;
+  }
 }
 
-/*** Hero Header end ***/
+@media (max-width: 768px) {
+  .hero-header h1 {
+    font-size: 2rem;
+  }
+  .search-bar input {
+    max-width: 100%;
+  }
+  #carouselHero .carousel-inner img {
+    height: 250px;
+  }
+}
+
 
 
 /*** featurs Start ***/
-.featurs .featurs-item .featurs-icon {
-    position: relative;
-    width: 120px;
-    height: 120px;
+/* Màu chủ đạo xanh ngọc */
+:root {
+  --main-color: #00bfa6;
 }
 
-.featurs .featurs-item .featurs-icon::after {
-    content: "";
-    width: 35px;
-    height: 35px;
-    background: var(--bs-secondary);
-    position: absolute;
-    bottom: -10px;
-    transform: translate(-50%);
-    transform: rotate(45deg);
-    background: var(--bs-secondary);
-
+.featurs {
+  background-color: #f8f9fa;
 }
+
+.featurs-item {
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.featurs-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 191, 166, 0.2);
+}
+
+.featurs-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-color) !important;
+}
+
+.featurs-content h5 {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.featurs-content p {
+  color: #666;
+  font-size: 14px;
+}
+
+.bg-primary {
+  background-color: var(--main-color) !important;
+}
+
 
 /*** featurs End ***/
 
@@ -394,12 +569,152 @@
 /*** vesitable End ***/
 
 
-/*** Banner Section Start ***/
+/*** tion Start ***/
 .banner .banner-btn:hover {
     background: var(--bs-primary);
 }
 
 /*** Banner Section End ***/
+
+/* Banner green-blue theme */
+.banner-greenblue {
+    background: linear-gradient(135deg, rgba(15,195,149,0.95) 0%, rgba(15,195,149,0.70) 100%) !important;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+}
+.banner-greenblue::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(1200px 400px at -10% -20%, rgba(255,255,255,0.18), transparent 60%),
+                radial-gradient(800px 300px at 120% 120%, rgba(255,255,255,0.12), transparent 60%);
+    pointer-events: none;
+}
+.banner-greenblue .banner-btn {
+    backdrop-filter: saturate(120%);
+}
+.banner-greenblue .banner-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+.banner-price-badge {
+    width: 96px;
+    height: 96px;
+    top: 28px;
+    left: 32px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.banner-price-badge h1 {
+    font-size: 64px;
+    line-height: 1;
+    color: #16c79a;
+}
+
+/* Brand button: xanh lá pha xanh dương */
+:root {
+  --brand-color: #0fc395f2; /* with alpha */
+  --brand-color-opaque: #0fc395; /* solid for Bootstrap utilities */
+  --bs-primary: var(--brand-color-opaque);
+}
+.btn-brand {
+  background: var(--brand-color);
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px rgba(15, 195, 149, 0.25);
+  transition: transform .22s ease, box-shadow .22s ease, opacity .22s ease;
+}
+.btn-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 195, 149, 0.28);
+  opacity: 0.98;
+}
+
+/* Best Section */
+.best-section h1 {
+  letter-spacing: .2px;
+}
+.best-highlight {
+  background: var(--brand-color);
+  box-shadow: 0 10px 30px rgba(15,195,149,.25);
+}
+.best-card {
+  border: 1px solid #ecf0f1;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+}
+.best-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.10);
+  border-color: rgba(15,195,149,.28);
+}
+.best-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding-top: 2px;
+  background: linear-gradient(90deg, rgba(15,195,149,.35), rgba(15,195,149,.08), rgba(15,195,149,.35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.best-card .price {
+  color: #0fc395;
+  font-weight: 700;
+}
+.best-card-img {
+  height: 240px;
+  object-fit: cover;
+}
+.best-card-media {
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+.best-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+}
+.best-card-media img { transition: transform .3s ease, box-shadow .3s ease, filter .3s ease; }
+.best-card:hover .best-card-media img {
+  transform: scale(1.03);
+  box-shadow: 0 12px 26px rgba(0,0,0,.14);
+  filter: saturate(1.02);
+}
+
+.best-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+}
+.best-card-title:hover { color: #0fc395; }
+
+/* XL variant for larger layout */
+.best-card-xl { padding: 1.25rem 1.25rem !important; }
+
+@media (max-width: 992px) {
+  .best-card-img { height: 220px; }
+}
+@media (max-width: 768px) {
+  .best-card-img { height: 200px; }
+}
+
+/* Button zoom inside best-card */
+.best-card .btn-brand {
+  transform-origin: center;
+}
+.best-card .btn-brand:hover {
+  transform: scale(1.08);
+}
 
 
 /*** Facts Start ***/

@@ -18,6 +18,7 @@ import com.example.demo.domain.CartDetail;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.Product_;
 import com.example.demo.domain.User;
+import com.example.demo.domain.dto.BestSellerDTO;
 import com.example.demo.domain.dto.ProductCriterialDTO;
 import com.example.demo.service.ProductService;
 
@@ -193,5 +194,6 @@ public class ItemController {
                 productCriterialDTO.getSort() != null ? productCriterialDTO.getSort().orElse("") : "");
         return "client/product/show";
     }
+
 
 }

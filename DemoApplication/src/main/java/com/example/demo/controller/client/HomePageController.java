@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.demo.domain.Order;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.User;
+import com.example.demo.domain.dto.BestSellerDTO;
 import com.example.demo.domain.dto.RegisterDTO;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.ProductService;
@@ -42,13 +43,20 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Product> prs = this.productService.getAllProducts(pageable);
-        List<Product> products = prs.getContent();
-        model.addAttribute("products", products);
-        return "client/homepage/show";
-    }
+public String getHomePage(Model model) {
+    Pageable pageable = PageRequest.of(0, 10);
+    Page<Product> prs = this.productService.getAllProducts(pageable);
+    List<Product> products = prs.getContent();
+    List<BestSellerDTO> bestSellers = productService.getTopBestSellers(6);
+    BestSellerDTO bestSeller = (bestSellers != null && !bestSellers.isEmpty()) ? bestSellers.get(0) : null;
+
+    model.addAttribute("products", products);
+    model.addAttribute("bestSeller", bestSeller);
+    model.addAttribute("bestSellers", bestSellers);
+
+    return "client/homepage/show";
+}
+
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
