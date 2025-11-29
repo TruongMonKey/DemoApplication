@@ -33,7 +33,7 @@
                 <link href="/client/css/style.css" rel="stylesheet">
             </head>
 
-            <body>
+            <body class="homepage">
 
                 <!-- Spinner Start -->
                 <div id="spinner"
@@ -111,8 +111,7 @@
                                                                     <fmt:formatNumber type="number"
                                                                         value="${product.price}" /> đ
                                                                 </p>
-                                                                <form action="/add-product-to-cart/${product.id}"
-                                                                    method="post"
+                                                                <form action="/add-product-to-homepage/${product.id}" method="post"
                                                                     class="w-100 d-flex justify-content-center">
                                                                     <input type="hidden" name="${_csrf.parameterName}"
                                                                         value="${_csrf.token}" />
@@ -186,7 +185,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                                 <div id="tab-3" class="tab-pane fade show p-0">
                                     <div class="row g-4">
@@ -466,63 +465,62 @@
                 <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
                 <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
 
+                <!-- SweetAlert2 BEFORE main.js -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
                 <!-- Template Javascript -->
                 <script src="/client/js/main.js"></script>
+
+                <!-- Thêm hidden CSRF token -->
+                <input type="hidden" id="csrfToken" value="${_csrf.token}">
+
+                <!-- ⚡ AJAX Add to Cart -->
+                <script>
+                $(document).ready(function () {
+
+                    $('.add-to-cart-btn').click(function () {
+
+                        let productId = $(this).data('id');
+                        let csrfToken = $('#csrfToken').val();
+
+                        $.ajax({
+                            url: '/add-product-to-cart/' + productId,
+                            type: 'POST',
+                            data: {
+                                _csrf: csrfToken
+                            },
+                            success: function (response) {
+
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Đã thêm sản phẩm vào giỏ!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                                if (response.cartQuantity !== undefined) {
+                                    $('#cart-count').text(response.cartQuantity);
+                                }
+                            },
+
+                            error: function () {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Thêm sản phẩm thất bại!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        });
+                    });
+
+                });
+                </script>
+
             </body>
 
             </html>
-            <style>
-                .product-card {
-                    border: 1.5px solid #e0e0e0;
-                    transition: transform 0.3s cubic-bezier(.4, 2, .3, 1), box-shadow 0.3s, border-color 0.3s;
-                    border-radius: 18px;
-                    background: #fff;
-                    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-                    overflow: hidden;
-                    position: relative;
-                }
-
-                .product-card:hover {
-                    transform: translateY(-10px) scale(1.04);
-                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-                    border-color: #4e9af1;
-                    z-index: 2;
-                }
-
-                .product-card .product-img {
-                    width: 180px;
-                    height: 180px;
-                    object-fit: cover;
-                    border-radius: 12px;
-                    background: #f8f9fa;
-                    transition: transform 0.35s cubic-bezier(.4, 2, .3, 1);
-                }
-
-                .product-card:hover .product-img {
-                    transform: scale(1.08) rotate(-2deg);
-                    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
-                }
-
-                .product-card .btn-outline-primary {
-                    transition: background 0.25s, color 0.25s, transform 0.2s;
-                    font-weight: 600;
-                    letter-spacing: 0.5px;
-                }
-
-                .product-card .btn-outline-primary:hover {
-                    background: linear-gradient(90deg, #2adfb2 100%, #6ed6a0 100%);
-                    color: #05cc5b;
-                    transform: scale(1.06);
-                    border: none;
-                    box-shadow: 0 2px 8px rgba(78, 154, 241, 0.15);
-                }
-
-                .product-card .badge {
-                    font-size: 13px;
-                    padding: 6px 14px;
-                    border-radius: 12px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                }
-
-                
-            </style>

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Cart;
 import com.example.demo.domain.CartDetail;
@@ -119,43 +120,48 @@ public class ProductService {
         this.productRepository.deleteById(id);
     }
 
+    @Transactional
     public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity) {
-        User user = this.userService.getUserByEmail(email);
-        if (user != null) {
-            Cart cart = this.cartRepository.findByUser(user);
-            if (cart == null) {
-                // tạo mới cart
-                Cart otherCart = new Cart();
-                otherCart.setUser(user);
-                otherCart.setSum(0);
 
-                cart = this.cartRepository.save(otherCart);
-            }
+        User user = userService.getUserByEmail(email);
+        if (user == null)
+            return;
 
+        Cart cart = cartRepository.findByUser(user);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(user);
+            cart.setSum(0);
+            cart = cartRepository.save(cart);
+        }
 
-            Optional<Product> productOptional = this.productRepository.findById(productId);
-            if (productOptional.isPresent()) {
-                Product realProduct = productOptional.get();
-                // check sản phẩm đã có trong giỏ hàng trước đây chưa?
-                CartDetail oldDetail = this.cartDetailRepository.findByCartAndProduct(cart, realProduct);
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product == null)
+            return;
 
-                if (oldDetail == null) {
-                    CartDetail cartDetail = new CartDetail();
-                    cartDetail.setCart(cart);
-                    cartDetail.setProduct(realProduct);
-                    cartDetail.setPrice(realProduct.getPrice());
-                    cartDetail.setQuantity(quantity);
-                    this.cartDetailRepository.save(cartDetail);
+        List<CartDetail> list = cartDetailRepository.findByCartAndProduct(cart, product);
 
-                    // update cart sum
-                    int s = cart.getSum() + 1;
-                    cart.setSum(cart.getSum() + 1);
-                    cart = this.cartRepository.save(cart);
-                    session.setAttribute("sum", s);
-                } else {
-                    oldDetail.setQuantity(oldDetail.getQuantity() + quantity);
-                    this.cartDetailRepository.save(oldDetail);
-                }
+        CartDetail cartDetail;
+
+        if (list.isEmpty()) {
+            cartDetail = new CartDetail();
+            cartDetail.setCart(cart);
+            cartDetail.setProduct(product);
+            cartDetail.setPrice(product.getPrice());
+            cartDetail.setQuantity(quantity);
+            cartDetailRepository.save(cartDetail);
+
+            cart.setSum(cart.getSum() + 1);
+            cartRepository.save(cart);
+            session.setAttribute("sum", cart.getSum());
+        } else {
+            cartDetail = list.get(0);
+            cartDetail.setQuantity(cartDetail.getQuantity() + quantity);
+            cartDetailRepository.save(cartDetail);
+
+            if (list.size() > 1) {
+                List<CartDetail> duplicates = list.subList(1, list.size());
+                cartDetailRepository.deleteAll(duplicates);
             }
         }
     }
@@ -259,12 +265,12 @@ public class ProductService {
     }
 
     public BestSellerDTO getBestSeller() {
-    List<BestSellerDTO> result = orderDetailRepository.findBestSellingProduct();
-    if (result == null || result.isEmpty()) {
-        return null;
+        List<BestSellerDTO> result = orderDetailRepository.findBestSellingProduct();
+        if (result == null || result.isEmpty()) {
+            return null;
+        }
+        return result.get(0);
     }
-    return result.get(0);
-}
 
     public List<BestSellerDTO> getTopBestSellers(int limit) {
         List<BestSellerDTO> result = orderDetailRepository.findBestSellingProduct();
@@ -276,6 +282,5 @@ public class ProductService {
         }
         return result;
     }
-
 
 }

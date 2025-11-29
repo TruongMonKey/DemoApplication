@@ -54,6 +54,7 @@
                 </head>
 
                 <body>
+                    <input type="hidden" id="csrfToken" value="${_csrf.token}" />
                     <jsp:include page="../layout/header.jsp" />
 
                     <!-- Spinner -->
@@ -82,7 +83,7 @@
 
                     <!-- Product Section -->
                     <div class="container py-5">
-                        <h3 class="mb-4" style="margin-left: 50%;">Danh sách sản phẩm</h3>
+                        <h3 class="mb-4" style="margin-left: 50%; margin-top: 40px;">Danh sách sản phẩm</h3>
                         <div class="row g-4">
                             <!-- Filter Sidebar -->
                             <div class="col-lg-3">
@@ -198,24 +199,24 @@
                                                         style="aspect-ratio:1/1; object-fit:cover; border-radius:10px;">
                                                 </a>
                                                 <div class="card-body text-center">
-                                                    <a href="/product/${product.id}"
-                                                        class="text-dark text-decoration-none">
-                                                        <h5 class="mb-2">${product.name}</h5>
-                                                    </a>
-                                                    <p class="text-muted mb-2" style="font-size: 14px;">
-                                                        ${product.shortDesc}
-                                                    </p>
-                                                    <p class="fw-bold text-primary mb-3">
-                                                        <fmt:formatNumber type="number" value="${product.price}" /> đ
-                                                    </p>
-                                                    <form action="/add-product-to-cart/${product.id}" method="post">
-                                                        <input type="hidden" name="${_csrf.parameterName}"
-                                                            value="${_csrf.token}" />
-                                                        <button class="btn btn-outline-primary rounded-pill px-3 py-1">
-                                                            <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
-                                                        </button>
-                                                    </form>
-                                                </div>
+    <a href="/product/${product.id}" class="text-dark text-decoration-none">
+        <h5 class="mb-2">${product.name}</h5>
+    </a>
+    <p class="text-muted mb-2" style="font-size: 14px;">
+        ${product.shortDesc}
+    </p>
+    <p class="fw-bold text-primary mb-3">
+        <fmt:formatNumber type="number" value="${product.price}" /> đ
+    </p>
+
+    <!-- ⚡ Nút AJAX thay thế form -->
+    <button 
+        type="button"
+        class="btn btn-outline-primary rounded-pill px-3 py-1 add-to-cart-btn"
+        data-id="${product.id}">
+        <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
+    </button>
+</div>
                                             </div>
                                         </div>
                                     </c:forEach>

@@ -83,4 +83,8 @@ public class UserService {
         return this.orderRepository.count();
     }
 
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
 }

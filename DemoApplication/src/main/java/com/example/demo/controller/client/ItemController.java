@@ -18,7 +18,6 @@ import com.example.demo.domain.CartDetail;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.Product_;
 import com.example.demo.domain.User;
-import com.example.demo.domain.dto.BestSellerDTO;
 import com.example.demo.domain.dto.ProductCriterialDTO;
 import com.example.demo.service.ProductService;
 
@@ -195,5 +194,13 @@ public class ItemController {
         return "client/product/show";
     }
 
-
+    @PostMapping("/add-product-to-homepage")
+    public String handleAddProductFromHomepage(
+            @RequestParam("id") long id,
+            @RequestParam("quantity") long quantity, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String email = (String) session.getAttribute("email");
+        this.productService.handleAddProductToCart(email, id, session, quantity);
+        return "redirect:/client/homepage/show/" + id;
+    }
 }

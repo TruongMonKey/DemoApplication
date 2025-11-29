@@ -29,8 +29,6 @@ public class User {
 
     @NotNull
     @Size(min = 2, message = "Password phải có tối thiểu 2 ký tự")
-    // @StrongPassword(message = "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ
-    // thường, số và ký tự đặc biệt")
     private String password;
 
     @NotNull
