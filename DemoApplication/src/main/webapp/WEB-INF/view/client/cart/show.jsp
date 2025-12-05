@@ -332,6 +332,7 @@
                                 opacity: 0;
                                 transform: translateY(20px);
                             }
+
                             to {
                                 opacity: 1;
                                 transform: translateY(0);
@@ -347,7 +348,7 @@
 
                 <body>
                     <jsp:include page="../layout/header.jsp" />
-                    
+
                     <div class="container cart-container">
                         <!-- Cart Header -->
                         <div class="cart-header">
@@ -383,8 +384,10 @@
                                                     <td colspan="6" class="empty-cart">
                                                         <i class="fas fa-shopping-cart"></i>
                                                         <h4>Giỏ hàng của bạn đang trống</h4>
-                                                        <p class="text-muted">Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm</p>
-                                                        <a href="/products" class="btn btn-checkout" style="width: auto; padding: 0.75rem 2rem;">
+                                                        <p class="text-muted">Hãy thêm sản phẩm vào giỏ hàng để tiếp tục
+                                                            mua sắm</p>
+                                                        <a href="/products" class="btn btn-checkout"
+                                                            style="width: auto; padding: 0.75rem 2rem;">
                                                             <i class="fas fa-shopping-bag me-2"></i>Tiếp tục mua sắm
                                                         </a>
                                                     </td>
@@ -404,7 +407,8 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <span class="price-tag">
-                                                            <fmt:formatNumber type="number" value="${cartDetail.price}" /> đ
+                                                            <fmt:formatNumber type="number"
+                                                                value="${cartDetail.price}" /> đ
                                                         </span>
                                                     </td>
                                                     <td class="text-center">
@@ -423,16 +427,19 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <span class="total-price" data-cart-detail-id="${cartDetail.id}">
+                                                        <span class="total-price"
+                                                            data-cart-detail-id="${cartDetail.id}">
                                                             <fmt:formatNumber type="number"
                                                                 value="${cartDetail.price * cartDetail.quantity}" /> đ
                                                         </span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <form method="post" action="/delete-cart-product/${cartDetail.id}">
+                                                        <form method="post"
+                                                            action="/delete-cart-product/${cartDetail.id}">
                                                             <input type="hidden" name="${_csrf.parameterName}"
                                                                 value="${_csrf.token}" />
-                                                            <button class="btn-delete" type="submit" title="Xóa sản phẩm">
+                                                            <button class="btn-delete" type="submit"
+                                                                title="Xóa sản phẩm">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
@@ -449,19 +456,19 @@
                                 <div class="col-lg-4">
                                     <div class="order-summary">
                                         <h5><i class="fas fa-file-invoice-dollar me-2"></i>Thông tin đơn hàng</h5>
-                                        
+
                                         <div class="summary-row">
                                             <span>Tạm tính:</span>
                                             <span class="amount" data-cart-total-price="${totalPrice}">
                                                 <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                             </span>
                                         </div>
-                                        
+
                                         <div class="summary-row">
                                             <span>Phí vận chuyển:</span>
                                             <span class="amount text-success">Miễn phí</span>
                                         </div>
-                                        
+
                                         <div class="summary-row total">
                                             <span>Tổng cộng:</span>
                                             <span class="amount" data-cart-total-price="${totalPrice}">
@@ -493,7 +500,7 @@
                     </div>
 
                     <jsp:include page="../layout/footer.jsp" />
-                    
+
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
                     <script src="/client/lib/easing/easing.min.js"></script>
@@ -501,6 +508,8 @@
                     <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
                     <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
                     <script src="/client/js/main.js"></script>
+
+
                 </body>
 
                 </html>

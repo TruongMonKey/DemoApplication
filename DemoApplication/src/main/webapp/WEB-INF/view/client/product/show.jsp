@@ -199,24 +199,24 @@
                                                         style="aspect-ratio:1/1; object-fit:cover; border-radius:10px;">
                                                 </a>
                                                 <div class="card-body text-center">
-    <a href="/product/${product.id}" class="text-dark text-decoration-none">
-        <h5 class="mb-2">${product.name}</h5>
-    </a>
-    <p class="text-muted mb-2" style="font-size: 14px;">
-        ${product.shortDesc}
-    </p>
-    <p class="fw-bold text-primary mb-3">
-        <fmt:formatNumber type="number" value="${product.price}" /> đ
-    </p>
+                                                    <a href="/product/${product.id}"
+                                                        class="text-dark text-decoration-none">
+                                                        <h5 class="mb-2">${product.name}</h5>
+                                                    </a>
+                                                    <p class="text-muted mb-2" style="font-size: 14px;">
+                                                        ${product.shortDesc}
+                                                    </p>
+                                                    <p class="fw-bold text-primary mb-3">
+                                                        <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                                    </p>
 
-    <!-- ⚡ Nút AJAX thay thế form -->
-    <button 
-        type="button"
-        class="btn btn-outline-primary rounded-pill px-3 py-1 add-to-cart-btn"
-        data-id="${product.id}">
-        <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
-    </button>
-</div>
+                                                    <!-- ⚡ Nút AJAX thay thế form -->
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary rounded-pill px-3 py-1 add-to-cart-btn"
+                                                        data-id="${product.id}">
+                                                        <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -256,6 +256,81 @@
 
                     <!-- Template Javascript -->
                     <script src="/client/js/main.js"></script>
+                    <%-- base URL cho endpoint add-to-cart (dùng c:url để tương thích context-path) --%>
+                        <c:url var="addToCartBase" value="/add-product-to-cart/" />
+
+                        <!-- Nếu chưa có SweetAlert2, import CDN -->
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                        <c:url var="addToCartBase" value="/add-product-to-cart/" />
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                        <script>
+                            $(function () {
+                                // Lấy CSRF token: ưu tiên meta nếu có, fallback tới hidden input #csrfToken
+                                const csrfToken = $('meta[name="_csrf"]').attr('content') || $('#csrfToken').val() || '${_csrf.token}';
+                                const csrfHeader = $('meta[name="_csrf_header"]').attr('content') || 'X-CSRF-TOKEN';
+
+                                // Delegated event (an toàn khi DOM thay đổi)
+                                $(document).on('click', '.add-to-cart-btn', function (e) {
+                                    e.preventDefault();
+                                    const $btn = $(this);
+                                    const productId = $btn.data('id');
+                                    if (!productId) return;
+
+                                    // disable nút tránh bấm liên tục
+                                    $btn.prop('disabled', true).addClass('opacity-50');
+
+                                    $.ajax({
+                                        url: '${addToCartBase}' + productId,
+                                        type: 'POST',
+                                        // Không đặt dataType để tránh parsererror khi server trả HTML/redirect
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                                            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // backend dễ nhận biết AJAX
+                                        },
+                                        success: function (responseText) {
+                                            // Hiện thông báo thành công rồi reload trang
+                                            Swal.fire({
+                                                toast: true,
+                                                position: 'top-end',
+                                                icon: 'success',
+                                                title: 'Đã thêm sản phẩm vào giỏ!',
+                                                showConfirmButton: false,
+                                                timer: 700
+                                            });
+
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 700);
+                                        },
+                                        error: function (xhr) {
+                                            // Show message cụ thể nếu server trả JSON error, nếu không dùng thông báo mặc định
+                                            let msg = 'Thêm sản phẩm thất bại!';
+                                            try {
+                                                const json = JSON.parse(xhr.responseText);
+                                                if (json && json.message) msg = json.message;
+                                            } catch (e) { /* không phải JSON */ }
+
+                                            Swal.fire({
+                                                toast: true,
+                                                position: 'top-end',
+                                                icon: 'error',
+                                                title: msg,
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                        },
+                                        complete: function () {
+                                            // bật lại nút
+                                            $btn.prop('disabled', false).removeClass('opacity-50');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+
+
                 </body>
 
 
